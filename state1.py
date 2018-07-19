@@ -41,11 +41,21 @@ class Process:
         print("{} is finished".format(self.name))
 
 
+def transition(process, event, event_name):
+    try:
+        event()
+    except InvalidStateTransition as err:
+        print("Error: transition of {} from {} to {} failed".format(process.name, process.current_state, event_name))
+
 def main():
     p = Process("test1")
-    p.run()
-    p.wait()
-    p.end()
+    transition(p, p.run, "running")
+    transition(p, p.wait, "waiting")
+    transition(p, p.end, "ending")
+    transition(p, p.run, "running")
+    # p.run()
+    # p.wait()
+    # p.end()
 
 
 if __name__ == '__main__':
